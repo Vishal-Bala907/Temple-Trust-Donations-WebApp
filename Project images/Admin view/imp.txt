@@ -1,0 +1,2 @@
+Admin can also Access all the functionality provider to the regular users , 
+So i dont add those snaps in here

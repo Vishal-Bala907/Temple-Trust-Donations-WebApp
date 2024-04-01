@@ -11,7 +11,7 @@ document.getElementById("pay-now-button").addEventListener('click', () => {
 	let amount = localStorage.getItem("price");
 	
 	var options = {
-		key: 'rzp_test_hDVO4xr8wTOJRr', // Replace with your Razorpay API key
+		key: 'rzp_test_q9VAoWuCTIuUQ8', // Replace with your Razorpay API key
 		amount: Number(amount) + "00", // Amount in smallest currency unit (e.g., paisa for INR)
 		currency: 'INR', // Currency code (e.g., INR for Indian Rupees)
 		name: 'Temple Trsut Donation',

@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 import com.temple.Entities.Devotee;
 import com.temple.repos.UserRepositories;
 
-import jakarta.transaction.Transactional;
-
 
 @Service
 public class UserService {

@@ -60,7 +60,12 @@ public class AdminController {
 		model.addAttribute("title","Profile page");
 		return "admin/admin-profile";
 	}
-
+//	
+	@GetMapping("/events")
+	public String getHomePage(Model model) {
+		model.addAttribute("title","Admin Events Management Page");
+		return "admin/admin-events-date";
+	}
 
 	@GetMapping("/shop")
 	public String shop(Model model) {
@@ -169,6 +174,13 @@ public class AdminController {
 		model.addAttribute("title","Donation Page");
 		return "/admin/admin-donate";
 	}
+	
+	@PostMapping("/donationForm")
+	public String donateSubmit(DonationForm donationForm,Model model) {
+		model.addAttribute("title","Donation Page");
+		return "/admin/admin-donate";
+	}
+
 
 	@GetMapping("/additem")
 	public String addItemForm(Products products,Model model) {
@@ -203,5 +215,6 @@ public class AdminController {
 		model.addAttribute("title","incomplete Donations");
 		return "admin/admin-incomplte-donations";
 	}
-
+	
+	
 }

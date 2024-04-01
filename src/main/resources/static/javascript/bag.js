@@ -63,7 +63,7 @@ function removeItemFromList(item) {
 			// Handle any errors that occur during the fetch
 			console.error('Error:', error);
 		});
-		
+
 
 }
 
@@ -92,13 +92,13 @@ let displayCart = () => {
 		`
 			;
 	} else {
-		
-		if(document.getElementById('cart-items').classList.contains('admin')){
-			
-			bagArray.forEach(item => {
-			/*shop.push(item)*/
 
-			cartHtml += ` 
+		if (document.getElementById('cart-items').classList.contains('admin')) {
+
+			bagArray.forEach(item => {
+				/*shop.push(item)*/
+
+				cartHtml += ` 
             <div class="card" style="width: 18rem; height: fit-content;;">
                  <img src="/${item.imageUrl}" class="card-img-top" alt="...">
                       <div class="card-body">
@@ -108,13 +108,13 @@ let displayCart = () => {
                         <a href="/admin/user-cart" style="margin-left:20%;" class="btn btn-danger ml-auto" id="remove-from-${item.p_id}">Remove From Bag</a>
                       </div>
             </div>`
-		});
-		document.getElementById('cart-items').innerHTML = cartHtml;
-		}else{
+			});
+			document.getElementById('cart-items').innerHTML = cartHtml;
+		} else {
 			bagArray.forEach(item => {
-			/*shop.push(item)*/
+				/*shop.push(item)*/
 
-			cartHtml += ` 
+				cartHtml += ` 
             <div class="card" style="width: 18rem; height: fit-content;;">
                  <img src="/${item.imageUrl}" class="card-img-top" alt="...">
                       <div class="card-body">
@@ -124,15 +124,15 @@ let displayCart = () => {
                         <a href="/user-cart" style="margin-left:20%;" class="btn btn-danger ml-auto" id="remove-from-${item.p_id}">Remove From Bag</a>
                       </div>
             </div>`
-		});
-		
-		document.getElementById('cart-items').innerHTML = cartHtml;
+			});
+
+			document.getElementById('cart-items').innerHTML = cartHtml;
 		}
 
-		
+
 	}
 
-	
+
 
 	bagArray.forEach(item => {
 		document.getElementById(`remove-from-${item.p_id}`).addEventListener('click', function(event) {
@@ -181,73 +181,100 @@ document.getElementById('artist-submit').addEventListener('click', () => {
 	let name = document.getElementById('contactName').value
 	let contact = document.getElementById('contactPhone').value
 	let email = document.getElementById('contactEmail').value
-	console.log(amount)
-
-	if (!checkFormValidation()) {
-		console.log("hello checking again")
-		return;
-	} else {
-
-		var options = {
-			key: 'rzp_test_hDVO4xr8wTOJRr', // Replace with your Razorpay API key
-			amount: amount + "00", // Amount in smallest currency unit (e.g., paisa for INR)
-			currency: 'INR', // Currency code (e.g., INR for Indian Rupees)
-			name: 'Temple Trsut Donation',
-			description: 'Items Realted To Temple and GOd',
-			image: null, // Logo or image URL
-			handler: function(response) {
-				// Handle successful payment
-				alert('Payment successful: ' + response.razorpay_payment_id);
-				document.getElementById('artist-book-confirm').disabled = false;
-				localStorage.setItem('disable', false);
-			},
-			prefill: {
-				name: name, // Buyer's name
-				email: email, // Buyer's email
-				contact: contact // Buyer's contact number
-			},
-			theme: {
-				color: '#F37254' // Customize the checkout theme color
-			}
-		};
-
-		var rzp = new Razorpay(options);
-		rzp.open();
+	
+		checkArtistDateAvaibility().then((data)=>{
+			if(data.length > 0){
+				document.getElementById('e-date').innerText = "The Entered Date Is Not Available"
+				return;
+			}else{
+				if (!checkFormValidationForArtist()) {
+				return;
+			} else {
+	
+				var options = {
+				key: 'rzp_test_q9VAoWuCTIuUQ8', // Replace with your Razorpay API key
+				amount: amount + "00", // Amount in smallest currency unit (e.g., paisa for INR)
+				currency: 'INR', // Currency code (e.g., INR for Indian Rupees)
+				name: 'Temple Trsut Donation',
+				description: 'Items Realted To Temple and GOd',
+				image: null, // Logo or image URL
+				handler: function(response) {
+					// Handle successful payment
+					alert('Payment successful: ' + response.razorpay_payment_id);
+					document.getElementById('artist-book-confirm').disabled = false;
+					localStorage.setItem('disable', false);
+				},
+				prefill: {
+					name: name, // Buyer's name
+					email: email, // Buyer's email
+					contact: contact // Buyer's contact number
+				},
+				theme: {
+					color: '#F37254' // Customize the checkout theme color
+				}
+			};
+	
+			var rzp = new Razorpay(options);
+			rzp.open();
+		
 	}
+			}
+				
+		})
+	
+
+		
 })
+
+
+async function checkArtistDateAvaibility(){
+	try{
+ 	const res = await fetch(`http://localhost:8080/get-artist-book-date/${document.getElementById('eventDate').value}`);
+    if(!res.ok){
+		throw new Error("Network Error")
+	}
+	const data = res.json();
+	return data;
+	}
+	catch(error){
+		console.log(error);
+	}
+}
+
+
 // Validates the from Filled by the user , ArtistBooking Form
-function checkFormValidation() {
+function checkFormValidationForArtist() {
 	let mark = true;
 	if (document.getElementById('artistName').value.length < 6) {
 		document.getElementById('form-an').innerText = 'Enter A Name With Atlest 5 Charcters'
 		mark = false;
-	}else{
+	} else {
 		document.getElementById('form-an').innerText = ""
 	}
-	
-	if(document.getElementById('eventDate').value === ''){
+
+	if (document.getElementById('eventDate').value === '') {
 		document.getElementById('e-date').innerText = "Please Select a date"
 		mark = false;
-	}else{
+	} else {
 		document.getElementById('e-date').innerText = ""
 	}
-	
+
 	if (Number(document.getElementById('numberOfDays').value) < 1) {
 		document.getElementById('form-dy').innerText = 'Enter A Valid Number Of Days '
 		mark = false;
-	}else{
+	} else {
 		document.getElementById('form-dy').innerText = ""
 	}
 	if (document.getElementById('contactName').value.length < 5) {
 		document.getElementById('form-yn').innerText = 'Enter A Name With Atlest 5 Charcters'
 		mark = false;
-	}else{
-		document.getElementById('form-yn').innerText =""
+	} else {
+		document.getElementById('form-yn').innerText = ""
 	}
 	if (document.getElementById('contactPhone').value.length < 10) {
 		document.getElementById('form-yp').innerText = 'Enter A Valid Number'
 		mark = false;
-	}else{
+	} else {
 		document.getElementById('form-yp').innerText = ""
 	}
 

@@ -37,6 +37,8 @@ public class BookHall {
 	@Pattern(regexp = "\\d{10}", message = "Invalid phone number")
 	@NotBlank(message = "Your Phone is required")
 	private String yourPhone;
+	
+	
 
 	// Getters and setters
 	// You can generate them using your IDE or write them manually]
@@ -46,20 +48,37 @@ public class BookHall {
 		return eventName;
 	}
 
-	public BookHall(@NotBlank(message = "Event Name is required") String eventName,
+
+
+	public BookHall(long id, @NotBlank(message = "Event Name is required") String eventName,
 			@NotNull(message = "Event Date is required") String date,
 			@NotNull(message = "Number of Days is required") @Min(value = 1, message = "Number of Days must be at least 1") Integer noOFdays,
 			@NotBlank(message = "Your Name is required") String yourName,
 			@Email(message = "Invalid email address") @NotBlank(message = "Your Email is required") String yourEmail,
 			@Pattern(regexp = "\\d{10}", message = "Invalid phone number") @NotBlank(message = "Your Phone is required") String yourPhone) {
 		super();
+		this.id = id;
 		this.eventName = eventName;
 		this.date = date;
-		NoOFdays = noOFdays;
+		this.NoOFdays = noOFdays;
 		this.yourName = yourName;
 		this.yourEmail = yourEmail;
 		this.yourPhone = yourPhone;
 	}
+
+	
+
+	public long getId() {
+		return id;
+	}
+
+
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+
 
 	public BookHall() {
 		super();

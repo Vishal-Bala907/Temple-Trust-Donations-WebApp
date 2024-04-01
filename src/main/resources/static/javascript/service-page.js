@@ -54,7 +54,7 @@ sidebarMenuButton.addEventListener("click", () => {
 		sidebarUl.classList.add("closed-sidebar-ul");
 		sidebarMenuButton.innerText = "menu";
 		document.getElementById("contentArea").style.width =  `95%`;
-		baseStyle[0].style.width =  `95%`;
+		baseStyle[0].style.width =  `92%`;
 		clickCount++;
 		//changeWidths(95)
 	} else {
@@ -64,7 +64,7 @@ sidebarMenuButton.addEventListener("click", () => {
 		sidebarUl.classList.add("sidebar-ul");
 		sidebarMenuButton.innerText = "close";
 		document.getElementById("contentArea").style.width = `72%`;
-		baseStyle[0].style.width = `70%`;
+		baseStyle[0].style.width = `68%`;
 		//changeWidths(77)
 		clickCount++;
 	}

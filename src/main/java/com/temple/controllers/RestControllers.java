@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.temple.Entities.Devotee;
 import com.temple.Entities.DonationForm;
 import com.temple.Entities.Products;
+import com.temple.repos.ArtistBookRepo;
 import com.temple.repos.DonationRepo;
 import com.temple.repos.FileUploadRepo;
 import com.temple.repos.UserRepositories;
@@ -36,7 +37,9 @@ public class RestControllers {
 	FileUploadRepo fileUploadRepo;
 	@Autowired
 	DonationRepo donationRepo;
-
+	@Autowired
+	ArtistBookRepo artistBookRepo;
+	
 	@GetMapping(value = "/getAllItems", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Products>> getAllProducts() {
 		List<Products> list = new ArrayList<>();
@@ -46,8 +49,6 @@ public class RestControllers {
 
 	@DeleteMapping("/data")
 	public String getDataToUpdate() {
-		System.out.println("hello from post");
-
 		return "redirect:/Users/Donate";
 
 	}
@@ -61,10 +62,8 @@ public class RestControllers {
 
 	@PutMapping(value = "/updateUser", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Devotee> updateUser(@RequestBody Devotee devotee) throws Exception {
-		System.out.println(devotee.getId());
 		Devotee updateUser = service.updateUser(repositories.findByUsername(this.service.getLoggedInUSer()), devotee);
-		System.out.println(updateUser.getId());
-		return ResponseEntity.ok().body(devotee);
+		return ResponseEntity.ok().body(updateUser);
 	}
 
 	@DeleteMapping(value = "/deleteUser", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -93,5 +92,19 @@ public class RestControllers {
 		
 		return ResponseEntity.ok().body(donationRepo.findIncompleteDonationDetails());
 	}
+	
+	@PutMapping(value="/donation-completed",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<DonationForm>> makeDonationCopmlete(@RequestBody DonationForm donation){
+		donation.setCollected(true);
+		donationRepo.save(donation);
+		return ResponseEntity.ok().body(donationRepo.findIncompleteDonationDetails());
+	}
+	@DeleteMapping(value="/reject-donation")
+	public ResponseEntity<DonationForm> rejectDonation(@RequestBody DonationForm donation){
+		donationRepo.delete(donation);
+		return ResponseEntity.ok().body(new DonationForm());
+	}
+	
+	
 
 }

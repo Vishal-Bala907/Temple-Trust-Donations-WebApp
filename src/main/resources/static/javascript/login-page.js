@@ -22,6 +22,7 @@ let innerhtml = "";
 // loading all the items to the Shop
 window.addEventListener('load', function() {
 	console.log("hello")
+	loadEventsOfNext7Days();
 	fetchPosts()
 		.then(data => {
 			data.forEach(item => {
@@ -80,6 +81,38 @@ loginPageEye.addEventListener('click', function() {
 		passwordField.type = "text"
 	}
 })
+
+
+async function loadEventsOfNext7Days(){
+	fetch("/7days-events").
+	then((res)=>{
+		if(!res.ok){
+			throw new Error("Error")
+			}
+			 return res.json()
+	}).then((data)=>{
+		let html = "";
+		data.forEach((item)=>{ 
+		html = html +	`<div class="card" style="width: 100%; margin:2%;">
+  			<div class="card-body">
+	    		<p class="card-text">
+	    			<h2> Event Name : ${item.eventName} </h2> <hr>
+	    			<h5> Event Date : ${item.date} </h5> <hr>
+	    			<h5> Event Days : ${item.noOFdays} </h5> <hr>
+	    			<h5> Organizer Email : ${item.yourEmail} </h5> <hr>
+	    			<h5> Organizer Name Email : ${item.yourName} </h5> <hr>
+	    			<h5> Organizer Name Phone : ${item.yourPhone} </h5> <hr>
+	    		</p> <hr>
+	    		<button class="btn btn-success" id="event-com-${item.id}" >Completed </button>
+	    		<button class="btn btn-danger" id="event-can-${item.id}">Canceled</button>
+  			</div>
+			</div>`
+		})
+		document.getElementById("admin-event-dates").innerHTML = html;
+	}
+		
+	)
+}
 
 
 

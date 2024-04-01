@@ -96,6 +96,12 @@ public class BookArtist {
 	public void setYourPhone(String yourPhone) {
 		this.yourPhone = yourPhone;
 	}
+
+	@Override
+	public String toString() {
+		return "BookArtist [id=" + id + ", artistName=" + artistName + ", date=" + date + ", NoOFdays=" + NoOFdays
+				+ ", yourName=" + yourName + ", yourEmail=" + yourEmail + ", yourPhone=" + yourPhone + "]";
+	}
 	
 	
 	
